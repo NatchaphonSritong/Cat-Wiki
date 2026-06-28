@@ -1,152 +1,287 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🐱 Cat Wiki สารานุกรมแมว</title>
-    <!-- ใช้ Tailwind CSS สำหรับความสวยงาม -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- ใช้ Marked.js สำหรับแปลงข้อความ Markdown เป็นหน้าเว็บ -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <style>
-        /* จัดรูปแบบเนื้อหาให้อ่านง่าย */
-        .wiki-content h1 { font-size: 2.25rem; font-weight: 800; margin-bottom: 1.5rem; color: #1f2937; border-bottom: 2px solid #f3f4f6; padding-bottom: 0.5rem; }
-        .wiki-content h2 { font-size: 1.5rem; font-weight: 700; margin-top: 1.75rem; margin-bottom: 0.75rem; color: #374151; }
-        .wiki-content p { margin-bottom: 1rem; color: #4b5563; line-height: 1.7; }
-        .wiki-content ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 1rem; }
-        .wiki-content ol { list-style-type: decimal; margin-left: 1.5rem; margin-bottom: 1rem; }
-        .wiki-content li { margin-bottom: 0.35rem; color: #4b5563; }
-        .wiki-content blockquote { border-left: 4px solid #f59e0b; padding-left: 1rem; color: #6b7280; font-style: italic; margin: 1rem 0; background: #fffbeb; padding-top: 0.5rem; padding-bottom: 0.5rem; }
-    </style>
+<meta charset="UTF-8">
+<title>Cat-Wiki</title>
+
+<style>
+
+body{
+    font-family:Arial;
+    background:#f5f5f5;
+    margin:0;
+}
+
+header{
+    background:#ff9800;
+    color:white;
+    padding:20px;
+    text-align:center;
+}
+
+nav{
+    background:#333;
+    padding:15px;
+}
+
+nav a{
+    color:white;
+    margin:20px;
+    text-decoration:none;
+}
+
+section{
+    padding:30px;
+}
+
+.card{
+    background:white;
+    width:300px;
+    display:inline-block;
+    margin:20px;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 0 10px gray;
+}
+
+.card img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+}
+
+.card h2{
+    text-align:center;
+}
+
+.card p{
+    padding:15px;
+}
+
+</style>
+
 </head>
-<body class="bg-gray-50 font-sans flex flex-col md:flex-row min-h-screen">
 
-    <!-- 1. แถบเมนูด้านข้าง (Sidebar) -->
-    <aside class="w-full md:w-64 bg-white border-r border-gray-200 p-6 flex flex-col shrink-0 shadow-sm">
-        <div class="flex items-center gap-3 mb-6 bg-amber-50 p-3 rounded-xl border border-amber-100">
-            <span class="text-3xl">🐱</span>
-            <div>
-                <h1 class="text-lg font-bold text-gray-800 leading-tight">Cat Wiki</h1>
-                <p class="text-xs text-amber-600 font-medium">สารานุกรมแมว</p>
-            </div>
-        </div>
-        <nav class="space-y-1 flex-1" id="sidebar-menu">
-            <!-- เมนูจะถูกสร้างอัตโนมัติจากข้อมูลด้านล่าง -->
-        </nav>
-        <div class="text-xs text-gray-400 mt-6 pt-4 border-t border-gray-100">
-            แก้ไขไฟล์เดียว ปรับแต่งได้ตามใจชอบ
-        </div>
-    </aside>
+<body>
 
-    <!-- 2. พื้นที่แสดงเนื้อหา (Content Area) -->
-    <main class="flex-1 p-6 md:p-12 max-w-4xl">
-        <article id="wiki-render" class="wiki-content bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-gray-100">
-            กำลังโหลดข้อมูลน้องแมว...
-        </article>
-    </main>
+<header>
 
-    <script>
-        // ===================================================
-        // 📝 [ส่วนปรับแต่งข้อมูล] คุณสามารถแก้ไข หรือเพิ่มหน้าใหม่ตรงนี้ได้เลย!
-        // ===================================================
-        const wikiData = {
-            "home": {
-                title: "🐾 หน้าแรก",
-                content: `# ยินดีต้อนรับสู่ Cat Wiki 
+<h1>🐱 Cat-Wiki</h1>
 
-เว็บสารานุกรมที่รวบรวมข้อมูลเกี่ยวกับน้องแมวที่คุณสามารถเข้ามาอ่านและอัปเดตข้อมูลได้เองในไฟล์เดียว!
+<h3>รวมข้อมูลแมวทุกสายพันธุ์บนโลก</h3>
 
-## แนะนำการใช้งาน
-เลือกอ่านข้อมูลสายพันธุ์แมว หรือวิธีการเลี้ยงดูได้จากเมนูทางด้านซ้ายมือเลยครับ
+</header>
 
-> **💡 วิธีเพิ่มหน้าใหม่หรือแก้ไข:** 
-> เปิดไฟล์นี้ เลื่อนลงมาที่ส่วน \`wikiData\` แล้วพิมพ์เพิ่มสายพันธุ์ใหม่ตามรูปแบบเดิมได้ทันที ไม่ต้องเขียนโค้ดเพิ่ม!`
-            },
-            "persian": {
-                title: "🐱 แมวเปอร์เซีย (Persian)",
-                content: `# แมวเปอร์เซีย (Persian Cat)
+<nav>
 
-แมวเปอร์เซียเป็นแมวขนยาวที่มีหน้าตาเป็นเอกลักษณ์ นิสัยสงบเสงี่ยมและรักเจ้าของ
+<a href="#breed">สายพันธุ์แมว</a>
 
-## ลักษณะทั่วไป
-* **ขน:** ยาวและหนา ต้องได้รับการแปรงขนทุกวัน
-* **ใบหน้า:** แบน กลม มีดวงตาโต
-* **นิสัย:** อ่อนโยน ไม่ค่อยส่งเสียงร้อง ชอบนอนพักผ่อน
+<a href="#care">วิธีดูแล</a>
 
-## การดูแล
-1. ต้องแปรงขนเป็นประจำเพื่อป้องกันขนพันกัน
-2. ควรเช็ดคราบน้ำตาให้บ่อยๆ เนื่องจากโครงสร้างใบหน้าทำให้มีน้ำตาไหลง่าย`
-            },
-            "siamese": {
-                title: "🐱 แมววิเชียรมาศ (Siamese)",
-                content: `# แมววิเชียรมาศ (Siamese Cat)
+<a href="#disease">โรคแมว</a>
 
-แมวไทยโบราณที่มีชื่อเสียงระดับโลก มีแต้มสีเข้มตามจุดสำคัญของร่างกายและมีตาสีฟ้าเป็นประกาย
+</nav>
 
-## ลักษณะทั่วไป
-* **รูปร่าง:** ปราดเปรียว เพรียวยาว ขนสั้น
-* **จุดเด่น:** มีรอยแต้มสีเข้ม (Points) 9 จุด เช่น ปลายเท้า หู หาง และใบหน้า
-* **นิสัย:** ฉลาด ช่างคุย ติดเจ้าของมาก และชอบส่งเสียงร้องทักทาย`
-            },
-            "food": {
-                title: "🍗 อาหารและโภชนาการ",
-                content: `# อาหารและโภชนาการของแมว
+<section id="breed">
 
-การเลือกอาหารที่เหมาะสมช่วยให้น้องแมวมีอายุยืนยาวและสุขภาพแข็งแรง
+<h1>สายพันธุ์แมว</h1>
 
-## ประเภทอาหาร
-* **อาหารเม็ด (Dry Food):** สะดวก ช่วยขัดฟัน แต่มีน้ำน้อย
-* **อาหารเปียก (Wet Food):** มีปริมาณน้ำสูง เหมาะกับแมวที่กินน้ำน้อย ป้องกันโรคไต
-* **อาหารสด (Barf):** อาหารดิบที่ต้องควบคุมความสะอาดเป็นพิเศษ
+<div class="card">
 
-## ข้อควรระวัง ❌
-ห้ามให้น้องแมวกิน **ช็อกโกแลต, หอมใหญ่, กระเทียม, และนมวัว** เด็ดขาด เพราะเป็นพิษต่อร่างกาย`
-            }
-        };
+<img src="persian.jpg">
 
-        // ===================================================
-        // ⚙️ [ส่วนระบบการทำงาน] ไม่จำเป็นต้องแก้ไขส่วนนี้
-        // ===================================================
-        function renderSidebar() {
-            const menuContainer = document.getElementById('sidebar-menu');
-            menuContainer.innerHTML = '';
-            
-            Object.keys(wikiData).forEach(key => {
-                const page = wikiData[key];
-                const a = document.createElement('a');
-                a.href = `#${key}`;
-                a.className = `flex items-center px-4 py-2.5 text-sm font-medium rounded-xl transition-all menu-item item-${key} text-gray-600 hover:bg-gray-50 hover:text-gray-900`;
-                a.textContent = page.title;
-                menuContainer.appendChild(a);
-            });
-        }
+<h2>แมวเปอร์เซีย</h2>
 
-        function router() {
-            const hash = window.location.hash.replace('#', '') || 'home';
-            const renderArea = document.getElementById('wiki-render');
-            
-            document.querySelectorAll('.menu-item').forEach(el => {
-                el.classList.remove('bg-amber-100', 'text-amber-900', 'font-semibold', 'shadow-xs');
-                el.classList.add('text-gray-600');
-            });
-            
-            const activeMenu = document.querySelector(`.item-${hash}`);
-            if (activeMenu) {
-                activeMenu.classList.remove('text-gray-600');
-                activeMenu.classList.add('bg-amber-100', 'text-amber-900', 'font-semibold', 'shadow-xs');
-            }
+<p>
 
-            if (wikiData[hash]) {
-                renderArea.innerHTML = marked.parse(wikiData[hash].content);
-            } else {
-                renderArea.innerHTML = `<h1 class="text-2xl font-bold text-red-500">❌ ไม่พบหน้านี้</h1><p class="mt-2 text-gray-500">กรุณาเลือกสายพันธุ์แมวใหม่อีกครั้งจากเมนูด้านซ้าย</p>`;
-            }
-            window.scrollTo(0, 0);
-        }
+<b>นิสัย</b><br>
+อ่อนโยน สุภาพ ขี้อ้อน
 
-        renderSidebar();
-        window.addEventListener('hashchange', router);
-        window.addEventListener('load', router);
-    </script>
+<br><br>
+
+<b>อาหาร</b><br>
+อาหารเม็ด อาหารเปียก เนื้อไก่ ปลา
+
+<br><br>
+
+<b>ประวัติ</b><br>
+เป็นแมวโบราณจากประเทศเปอร์เซีย
+
+</p>
+
+</div>
+
+<div class="card">
+
+<img src="mainecoon.jpg">
+
+<h2>เมนคูน</h2>
+
+<p>
+
+<b>นิสัย</b><br>
+
+ฉลาด เป็นมิตร รักเจ้าของ
+
+<br><br>
+
+<b>อาหาร</b><br>
+
+อาหารโปรตีนสูง ปลา เนื้อ
+
+<br><br>
+
+<b>ประวัติ</b><br>
+
+กำเนิดจากรัฐเมน ประเทศสหรัฐอเมริกา
+
+</p>
+
+</div>
+
+<div class="card">
+
+<img src="ragdoll.jpg">
+
+<h2>แร็กดอลล์</h2>
+
+<p>
+
+<b>นิสัย</b><br>
+
+ขี้อ้อน ใจเย็น
+
+<br><br>
+
+<b>อาหาร</b><br>
+
+อาหารเม็ดคุณภาพสูง
+
+<br><br>
+
+<b>ประวัติ</b><br>
+
+พัฒนาสายพันธุ์ในอเมริกา
+
+</p>
+
+</div>
+
+</section>
+
+<section id="care">
+
+<h1>วิธีดูแลแมว</h1>
+
+<ul>
+
+<li>ให้อาหารที่มีคุณภาพ</li>
+
+<li>เปลี่ยนน้ำทุกวัน</li>
+
+<li>ทำความสะอาดกระบะทราย</li>
+
+<li>ฉีดวัคซีน</li>
+
+<li>ถ่ายพยาธิ</li>
+
+<li>แปรงขนเป็นประจำ</li>
+
+<li>พาไปพบสัตวแพทย์ปีละ 1-2 ครั้ง</li>
+
+<li>ออกกำลังกายด้วยของเล่น</li>
+
+</ul>
+
+</section>
+
+<section id="disease">
+
+<h1>โรคที่พบบ่อย</h1>
+
+<h2>1. หวัดแมว</h2>
+
+อาการ
+
+<ul>
+
+<li>จาม</li>
+
+<li>น้ำมูก</li>
+
+<li>ไข้</li>
+
+<li>เบื่ออาหาร</li>
+
+</ul>
+
+การรักษา
+
+<ul>
+
+<li>พบสัตวแพทย์</li>
+
+<li>ให้ยาตามแพทย์สั่ง</li>
+
+<li>เช็ดน้ำมูก</li>
+
+</ul>
+
+<hr>
+
+<h2>2. พยาธิ</h2>
+
+อาการ
+
+<ul>
+
+<li>ผอม</li>
+
+<li>ท้องเสีย</li>
+
+<li>อาเจียน</li>
+
+</ul>
+
+การรักษา
+
+<ul>
+
+<li>ถ่ายพยาธิ</li>
+
+<li>พบสัตวแพทย์</li>
+
+</ul>
+
+<hr>
+
+<h2>3. เชื้อรา</h2>
+
+อาการ
+
+<ul>
+
+<li>ขนร่วง</li>
+
+<li>คัน</li>
+
+<li>ผิวแดง</li>
+
+</ul>
+
+การรักษา
+
+<ul>
+
+<li>ยาทา</li>
+
+<li>ยากิน</li>
+
+<li>อาบน้ำยาฆ่าเชื้อ</li>
+
+</ul>
+
+</section>
+
 </body>
 </html>
